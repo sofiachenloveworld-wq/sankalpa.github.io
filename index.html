@@ -6,11 +6,11 @@
     <title>sankalpa心念 - 疗愈音乐空间</title>
     <style>
         :root {
-            --bg-page: #f1ece4;       /* 大地奶茶色底色 */
-            --bg-card: #d7c4a3;       /* 核心小麦色 */
-            --glass-border: rgba(161, 136, 127, 0.4); 
-            --text-main: #3e2723;     /* 更深一点的咖色，配合粗体 */
-            --accent: #a1887f;        
+            /* 严格使用样稿中的小麦色和深咖色 */
+            --bg-page: #f1ece4;       /* 整体奶茶色底色 */
+            --bg-card: #e5ddd3;       /* 样稿中的小麦色卡片底色 */
+            --text-main: #3e2723;     /* 深咖色控件与文字 */
+            --accent: #a1887f;        /* 辅助褐色 */
         }
 
         body {
@@ -24,12 +24,14 @@
             align-items: center;
         }
 
+        /* --- Banner 零裁切 --- */
         .banner-container { width: 100%; line-height: 0; }
         .banner-img { width: 100%; height: auto; display: block; }
         .pc-banner { display: block; }
         .mobile-banner { display: none; }
         @media (max-width: 768px) { .pc-banner { display: none; } .mobile-banner { display: block; } }
 
+        /* --- 容器布局 --- */
         .container {
             max-width: 1200px;
             width: 90%;
@@ -41,18 +43,19 @@
         @media (max-width: 1024px) { .container { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
 
-        /* --- 调整后的卡片：增加留边设计 --- */
+        /* --- 终极复刻卡片：完全按照样稿结构 --- */
         .music-card {
             background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px; /* 稍微大一点的圆角 */
+            border-radius: 30px; /* 大圆角卡片 */
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            padding: 15px; /* 这里是关键：为图片和文字四周留出空白 */
+            /* 严格复刻样稿的留白 */
+            padding: 20px 20px 30px 20px; 
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
         }
 
         .music-card:hover {
@@ -60,59 +63,30 @@
             box-shadow: 0 12px 30px rgba(78, 52, 46, 0.12);
         }
 
+        /* 封面图容器：实现留边与圆角嵌套 */
         .cover-box {
             width: 100%;
             aspect-ratio: 1 / 1;
-            position: relative;
-            border-radius: 18px; /* 图片容器的圆角 */
+            border-radius: 20px; /* 图片的内层圆角 */
             overflow: hidden;
+            margin-bottom: 20px;
         }
 
         .cover-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 18px; /* 图片自身的圆角 */
-            transition: transform 0.5s ease;
         }
 
-        /* 播放图标遮罩 */
-        .play-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            opacity: 0; /* 默认隐藏，hover显示 */
-            transition: opacity 0.3s;
-        }
-        .play-overlay::after {
-            content: '';
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 12px solid white;
-            margin-left: 4px;
-        }
-        .music-card:hover .play-overlay { opacity: 1; }
-
+        /* 标题排版 */
         .info {
-            padding-top: 15px;
             text-align: center;
+            margin-bottom: 20px;
         }
 
-        /* 字体加粗与样式优化 */
         .title {
-            font-size: 0.95em;
-            font-weight: 700; /* 加粗字体 */
+            font-size: 0.9em;
+            font-weight: 400; /* 清雅字体 */
             letter-spacing: 0.5px;
             line-height: 1.4;
             color: var(--text-main);
@@ -122,15 +96,60 @@
             justify-content: center;
         }
 
+        /* --- 复刻样稿的播放控件区 --- */
+        .card-controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* 模拟进度条 */
+        .fake-progress {
+            width: 80%;
+            height: 2px;
+            background-color: rgba(62, 39, 35, 0.2);
+            position: relative;
+        }
+        .fake-progress::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 6px; height: 6px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+        }
+
+        /* 模拟控制按钮 ($\blacktriangleleft \blacktriangleleft$, $II$, $\blacktriangleright \blacktriangleright$) */
+        .fake-buttons {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 1.2em;
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+        .play-btn {
+            width: 35px;
+            height: 35px;
+            border: 2px solid var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        /* --- 实际播放器 - 隐藏但发挥功能 --- */
         .player-bar {
             position: fixed;
             bottom: 25px;
             width: 85%;
             max-width: 550px;
-            background: rgba(215, 196, 163, 0.9);
+            background: rgba(229, 221, 211, 0.95); /* 使用卡片小麦色 */
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
             border-radius: 100px;
             padding: 12px 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -138,9 +157,9 @@
             flex-direction: column;
             align-items: center;
             z-index: 1000;
+            display: none; /* 初始隐藏，点击后显示 */
         }
-
-        #currentPlaying { font-size: 0.85em; font-weight: 700; margin-bottom: 5px; }
+        #currentPlaying { font-size: 0.85em; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
         audio { width: 100%; height: 35px; filter: sepia(20%) contrast(90%); }
 
         .active-card { border: 2px solid var(--text-main); }
@@ -155,7 +174,7 @@
 
 <div class="container" id="musicList"></div>
 
-<div class="player-bar">
+<div class="player-bar" id="playerBar">
     <div id="currentPlaying">已备好，请开启心念</div>
     <audio id="mainPlayer" controls></audio>
 </div>
@@ -177,6 +196,7 @@
 
     const musicList = document.getElementById('musicList');
     const player = document.getElementById('mainPlayer');
+    const playerBar = document.getElementById('playerBar');
     const playingText = document.getElementById('currentPlaying');
 
     songs.forEach(song => {
@@ -184,16 +204,24 @@
         card.className = 'music-card';
         card.innerHTML = `
             <div class="cover-box">
-                <div class="play-overlay"></div>
                 <img src="cover${song.id}.jpg" class="cover-img">
             </div>
             <div class="info">
                 <div class="title">${song.title}</div>
             </div>
+            <div class="card-controls">
+                <div class="fake-progress"></div>
+                <div class="fake-buttons">
+                    <div>$\blacktriangleleft \blacktriangleleft$</div>
+                    <div class="play-btn">$II$</div>
+                    <div>$\blacktriangleright \blacktriangleright$</div>
+                </div>
+            </div>
         `;
         card.onclick = () => {
             player.src = `${baseUrl}${song.id}.mp3`;
             player.play();
+            playerBar.style.display = 'flex'; // 显示底部播放器
             playingText.innerText = `正在播放: ${song.title}`;
             document.querySelectorAll('.music-card').forEach(c => c.classList.remove('active-card'));
             card.classList.add('active-card');
