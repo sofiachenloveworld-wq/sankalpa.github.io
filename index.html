@@ -43,7 +43,7 @@
             padding: 12px 12px 20px 12px;
             display: flex; flex-direction: column;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
             position: relative;
         }
 
@@ -54,7 +54,7 @@
         }
         .cover-img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- 动态播放按钮容器 --- */
+        /* --- 播放图标容器 --- */
         .play-overlay {
             position: absolute;
             top: 50%; left: 50%;
@@ -68,22 +68,25 @@
             z-index: 2;
         }
 
-        /* 默认状态：三角形播放图标 */
+        /* 基础图标：三角形 */
         .icon-shape {
             width: 0; height: 0; 
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
             border-left: 13px solid white;
             margin-left: 4px;
+            transition: all 0.1s ease;
         }
 
-        /* 播放中状态：变成双竖线暂停图标 */
+        /* 播放状态：紧凑的双竖线 */
         .playing .icon-shape {
-            width: 12px; height: 14px;
+            width: 10px; height: 14px; /* 稍微缩小宽度让它更精致 */
             border: none;
-            border-left: 4px solid white;
-            border-right: 4px solid white;
+            border-left: 3.5px solid white;  /* 竖线宽度 */
+            border-right: 3.5px solid white; /* 竖线宽度 */
             margin-left: 0;
+            /* 关键：调整竖线间距，通过中间留白 */
+            background: transparent;
         }
 
         .info { padding-top: 12px; text-align: center; }
@@ -106,7 +109,7 @@
         #currentPlaying { font-size: 0.75em; font-weight: 700; margin-bottom: 5px; }
         audio { width: 100%; height: 32px; filter: sepia(20%); }
 
-        /* 正在播放的卡片边框加深 */
+        /* 高亮正在操作的卡片 */
         .active-card { outline: 2.5px solid var(--text-main); }
     </style>
 </head>
@@ -127,60 +130,4 @@
 <script>
     const baseUrl = "https://sankalpamusic-1301330489.cos.ap-guangzhou.myqcloud.com/";
     const songs = [
-        { id: 1, title: "【432Hz步入灵境】西藏禅宗声音疗愈" },
-        { id: 2, title: "432Hz-宇宙和谐治愈震动-提升Energy" },
-        { id: 3, title: "528Hz盖亚之爱：疗愈心轮拥抱爱与慈悲" },
-        { id: 4, title: "528Hz-内心深处的和平与平静" },
-        { id: 5, title: "【灵气音乐】长笛与颂钵，内心的平静与和谐" },
-        { id: 6, title: "528Hz内在疗愈-你所渴望的早已属于你" },
-        { id: 7, title: "【爱的频率】拥抱你的內在小孩-自我接纳" },
-        { id: 8, title: "888Hz-显化丰盛" },
-        { id: 9, title: "528Hz-DNA修复频率：唤醒治愈力量" },
-        { id: 10, title: "396Hz-平静的声音治愈-放下所有忧虑" }
-    ];
-
-    const musicList = document.getElementById('musicList');
-    const player = document.getElementById('mainPlayer');
-    const playingText = document.getElementById('currentPlaying');
-
-    songs.forEach(song => {
-        const card = document.createElement('div');
-        card.className = 'music-card';
-        card.dataset.id = song.id;
-        card.innerHTML = `
-            <div class="cover-box">
-                <div class="play-overlay">
-                    <div class="icon-shape"></div>
-                </div>
-                <img src="cover${song.id}.jpg" class="cover-img">
-            </div>
-            <div class="info">
-                <div class="title">${song.title}</div>
-            </div>
-        `;
-        
-        card.onclick = () => {
-            // 如果点的是已经在播放的，就不用重新加载（可选）
-            if (player.src !== `${baseUrl}${song.id}.mp3`) {
-                player.src = `${baseUrl}${song.id}.mp3`;
-                player.play();
-                playingText.innerText = `正在播放: ${song.title}`;
-            }
-
-            // 更新 UI 状态
-            document.querySelectorAll('.music-card').forEach(c => {
-                c.classList.remove('active-card', 'playing');
-            });
-            card.classList.add('active-card', 'playing');
-        };
-        musicList.appendChild(card);
-    });
-
-    // 监听播放结束，重置图标
-    player.onended = () => {
-        document.querySelectorAll('.music-card').forEach(c => c.classList.remove('playing'));
-        playingText.innerText = "播放已结束";
-    };
-</script>
-</body>
-</html>
+        { id: 1, title: "【432Hz步入灵
